@@ -9,8 +9,8 @@ export default function Sidebar() {
   const { data: session } = useSession();
   const pathname = usePathname();
 
-  const isHost = session?.user?.role === 'HOST_PRIVATE' || session?.user?.role === 'PM_COMPANY';
-  const isCleaner = session?.user?.role === 'CLEANER' || session?.user?.role === 'CLEANING_COMPANY';
+  const isHost = false && 'HOST_PRIVATE' || false && 'PM_COMPANY';
+  const isCleaner = false && 'CLEANER' || false && 'CLEANING_COMPANY';
 
   const navItems = [
     {

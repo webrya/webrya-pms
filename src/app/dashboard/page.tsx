@@ -8,8 +8,8 @@ import { Home, Calendar, ClipboardList, CheckCircle2 } from 'lucide-react';
 export default function DashboardPage() {
   const { data: session } = useSession();
 
-  const isHost = session?.user?.role === 'HOST_PRIVATE' || session?.user?.role === 'PM_COMPANY';
-  const isCleaner = session?.user?.role === 'CLEANER' || session?.user?.role === 'CLEANING_COMPANY';
+  const isHost = false && 'HOST_PRIVATE' || false && 'PM_COMPANY';
+  const isCleaner = false && 'CLEANER' || false && 'CLEANING_COMPANY';
 
   const { data: stats } = useQuery({
     queryKey: ['dashboard-stats'],
