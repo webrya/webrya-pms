@@ -9,8 +9,8 @@ const profileSchema = z.object({
 
 export async function PUT(req: Request) {
   try {
-    const user = await getUserFromSession();
-    if (!user) {
+    const currentUser = await getUserFromSession();
+    if (!currentUser) {
       return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
     }
 
@@ -18,7 +18,7 @@ export async function PUT(req: Request) {
     const { name } = profileSchema.parse(body);
 
     const user = await prisma.user.update({
-      where: { id: user.id },
+      where: { id: currentUser.id },
       data: { name },
     });
 
