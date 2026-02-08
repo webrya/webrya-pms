@@ -5,7 +5,7 @@ generator client {
 }
 
 datasource db {
-  provider = "mongodb"
+  provider = "postgresql"
   url      = env("DATABASE_URL")
 }
 
@@ -33,7 +33,7 @@ enum InviteRole {
 }
 
 model User {
-  id        String   @id @default(auto()) @map("_id") @db.ObjectId
+  id        String   @id @default(uuid()) @db.Uuid
   email     String   @unique
   password  String
   name      String?
@@ -52,13 +52,13 @@ model User {
 }
 
 model Property {
-  id          String   @id @default(auto()) @map("_id") @db.ObjectId
+  id          String   @id @default(uuid()) @db.Uuid
   name        String
   description String?
   address     String?
   icalUrl     String?
   imageUrl    String?
-  ownerId     String   @db.ObjectId
+  ownerId     String   @db.Uuid
   createdAt   DateTime @default(now())
   updatedAt   DateTime @updatedAt
 
@@ -71,9 +71,9 @@ model Property {
 }
 
 model PropertyMember {
-  id         String     @id @default(auto()) @map("_id") @db.ObjectId
-  propertyId String     @db.ObjectId
-  userId     String     @db.ObjectId
+  id         String     @id @default(uuid()) @db.Uuid
+  propertyId String     @db.Uuid
+  userId     String     @db.Uuid
   role       InviteRole
   createdAt  DateTime   @default(now())
 
@@ -84,8 +84,8 @@ model PropertyMember {
 }
 
 model Booking {
-  id          String   @id @default(auto()) @map("_id") @db.ObjectId
-  propertyId  String   @db.ObjectId
+  id          String   @id @default(uuid()) @db.Uuid
+  propertyId  String   @db.Uuid
   externalUid String   @unique
   startDate   DateTime
   endDate     DateTime
@@ -100,13 +100,13 @@ model Booking {
 }
 
 model Task {
-  id           String     @id @default(auto()) @map("_id") @db.ObjectId
-  propertyId   String     @db.ObjectId
-  bookingId    String?    @db.ObjectId
+  id           String     @id @default(uuid()) @db.Uuid
+  propertyId   String     @db.Uuid
+  bookingId    String?    @db.Uuid
   title        String
   dueDate      DateTime
   status       TaskStatus @default(open)
-  assignedToId String?    @db.ObjectId
+  assignedToId String?    @db.Uuid
   notes        String?
   createdAt    DateTime   @default(now())
   updatedAt    DateTime   @updatedAt
@@ -119,9 +119,9 @@ model Task {
 }
 
 model TaskActivity {
-  id          String   @id @default(auto()) @map("_id") @db.ObjectId
-  taskId      String   @db.ObjectId
-  userId      String   @db.ObjectId
+  id          String   @id @default(uuid()) @db.Uuid
+  taskId      String   @db.Uuid
+  userId      String   @db.Uuid
   action      String   // created, assigned, updated, completed
   description String
   createdAt   DateTime @default(now())
@@ -132,13 +132,13 @@ model TaskActivity {
 }
 
 model PropertyInvite {
-  id         String      @id @default(auto()) @map("_id") @db.ObjectId
-  propertyId String      @db.ObjectId
+  id         String      @id @default(uuid()) @db.Uuid
+  propertyId String      @db.Uuid
   email      String
   role       InviteRole
   token      String      @unique
   acceptedAt DateTime?
-  senderId   String      @db.ObjectId
+  senderId   String      @db.Uuid
   createdAt  DateTime    @default(now())
   expiresAt  DateTime
 
@@ -148,8 +148,8 @@ model PropertyInvite {
 }
 
 model Notification {
-  id        String   @id @default(auto()) @map("_id") @db.ObjectId
-  userId    String   @db.ObjectId
+  id        String   @id @default(uuid()) @db.Uuid
+  userId    String   @db.Uuid
   type      String   // task_assigned, task_due_date_changed
   message   String
   read      Boolean  @default(false)
