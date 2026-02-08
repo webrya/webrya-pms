@@ -4,12 +4,10 @@ import { useSession, signOut } from 'next-auth/react';
 import { usePathname } from 'next/navigation';
 import Link from 'next/link';
 import { Building2, LayoutDashboard, ClipboardList, Home, Settings, LogOut, Calendar } from 'lucide-react';
-import { useLanguage } from './LanguageProvider';
 
 export default function Sidebar() {
   const { data: session } = useSession();
   const pathname = usePathname();
-  const { t } = useLanguage();
 
   const isHost = session?.user?.role === 'HOST_PRIVATE' || session?.user?.role === 'PM_COMPANY';
   const isCleaner = session?.user?.role === 'CLEANER' || session?.user?.role === 'CLEANING_COMPANY';
@@ -17,35 +15,35 @@ export default function Sidebar() {
   const navItems = [
     {
       id: 'dashboard',
-      label: isCleaner ? t('myTasks') : t('dashboard'),
+      label: isCleaner ? 'My Tasks' : 'Dashboard',
       icon: isCleaner ? ClipboardList : LayoutDashboard,
       href: '/dashboard',
       show: true,
     },
     {
       id: 'properties',
-      label: t('properties'),
+      label: 'Properties',
       icon: Home,
       href: '/dashboard/properties',
       show: isHost,
     },
     {
       id: 'bookings',
-      label: t('bookings'),
+      label: 'Bookings',
       icon: Calendar,
       href: '/dashboard/bookings',
       show: isHost,
     },
     {
       id: 'tasks',
-      label: t('tasks'),
+      label: 'Tasks',
       icon: ClipboardList,
       href: '/dashboard/tasks',
       show: isHost,
     },
     {
       id: 'settings',
-      label: t('settings'),
+      label: 'Settings',
       icon: Settings,
       href: '/dashboard/settings',
       show: true,
