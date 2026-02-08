@@ -95,7 +95,7 @@ export default function Sidebar() {
             </div>
             <div className="flex-1 min-w-0">
               <p className="text-sm font-medium text-white truncate">{session?.user?.name || 'User'}</p>
-              <p className="text-xs text-slate-400 truncate">{session?.user?.role || 'HOST_PRIVATE'}</p>
+              <p className="text-xs text-slate-400 truncate">{"'HOST_PRIVATE'}</p>
             </div>
           </div>
           <button
