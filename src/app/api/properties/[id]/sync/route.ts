@@ -17,7 +17,7 @@ export async function POST(
     }
 
     const property = await prisma.property.findFirst({
-      where: { id: params.id, ownerId: session.user.id },
+      where: { id, ownerId: session.user.id },
     });
 
     if (!property) {
