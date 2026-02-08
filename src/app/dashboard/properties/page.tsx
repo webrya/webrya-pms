@@ -186,7 +186,7 @@ function PropertyModal({ property, onClose, onSubmit }: any) {
     <div className="fixed inset-0 bg-black/50 backdrop-blur-sm flex items-center justify-center p-4 z-50">
       <div className="glass rounded-2xl p-8 max-w-lg w-full max-h-[90vh] overflow-y-auto">
         <h2 className="text-2xl font-bold text-white mb-6">
-          {property ? t('editProperty') : t('addProperty')}
+          {property ? 'Edit Property' : 'Add Property'}
         </h2>
 
         <form onSubmit={handleSubmit} className="space-y-4">
