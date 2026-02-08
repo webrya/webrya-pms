@@ -1,6 +1,5 @@
+import { getUserFromSession } from '@/lib/session';
 import { NextResponse } from 'next/server';
-import { getServerSession } from 'next-auth';
-import { authOptions } from '@/lib/auth';
 import { prisma } from '@/lib/prisma';
 import { z } from 'zod';
 
@@ -15,13 +14,13 @@ const propertySchema = z.object({
 // GET all properties
 export async function GET() {
   try {
-    const session = await getServerSession(authOptions);
-    if (!session?.user?.email) {
+    const user = await getUserFromSession();
+    if (!user) {
       return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
     }
 
     const properties = await prisma.property.findMany({
-      where: { ownerId: session.user.id },
+      where: { ownerId: user.id },
       include: {
         _count: {
           select: {
@@ -43,8 +42,8 @@ export async function GET() {
 // POST create property
 export async function POST(req: Request) {
   try {
-    const session = await getServerSession(authOptions);
-    if (!session?.user?.email) {
+    const user = await getUserFromSession();
+    if (!user) {
       return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
     }
 
@@ -54,7 +53,7 @@ export async function POST(req: Request) {
     const property = await prisma.property.create({
       data: {
         ...data,
-        ownerId: session.user.id,
+        ownerId: user.id,
       },
     });
 

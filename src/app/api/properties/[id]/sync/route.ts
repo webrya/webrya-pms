@@ -1,6 +1,5 @@
+import { getUserFromSession } from '@/lib/session';
 import { NextResponse } from 'next/server';
-import { getServerSession } from 'next-auth';
-import { authOptions } from '@/lib/auth';
 import { prisma } from '@/lib/prisma';
 import { parseICalFeed } from '@/lib/ical';
 import { addDays } from 'date-fns';
@@ -11,13 +10,13 @@ export async function POST(
 ) {
   try {
     const { id } = await params;
-    const session = await getServerSession(authOptions);
-    if (!session?.user?.email) {
+    const user = await getUserFromSession();
+    if (!user) {
       return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
     }
 
     const property = await prisma.property.findFirst({
-      where: { id, ownerId: session.user.id },
+      where: { id, ownerId: user.id },
     });
 
     if (!property) {
@@ -74,7 +73,7 @@ export async function POST(
         await prisma.taskActivity.create({
           data: {
             taskId: task.id,
-            userId: session.user.id,
+            userId: user.id,
             action: 'created',
             description: 'Task auto-generated from booking',
           },

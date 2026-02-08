@@ -1,6 +1,5 @@
+import { getUserFromSession } from '@/lib/session';
 import { NextResponse } from 'next/server';
-import { getServerSession } from 'next-auth';
-import { authOptions } from '@/lib/auth';
 import { prisma } from '@/lib/prisma';
 import { z } from 'zod';
 
@@ -19,15 +18,15 @@ export async function GET(
 ) {
   try {
     const { id } = await params;
-    const session = await getServerSession(authOptions);
-    if (!session?.user?.email) {
+    const user = await getUserFromSession();
+    if (!user) {
       return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
     }
 
     const property = await prisma.property.findFirst({
       where: {
         id,
-        ownerId: session.user.id,
+        ownerId: user.id,
       },
       include: {
         bookings: {
@@ -59,8 +58,8 @@ export async function PUT(
 ) {
   try {
     const { id } = await params;
-    const session = await getServerSession(authOptions);
-    if (!session?.user?.email) {
+    const user = await getUserFromSession();
+    if (!user) {
       return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
     }
 
@@ -69,7 +68,7 @@ export async function PUT(
 
     // Check ownership
     const existing = await prisma.property.findFirst({
-      where: { id, ownerId: session.user.id },
+      where: { id, ownerId: user.id },
     });
 
     if (!existing) {
@@ -98,14 +97,14 @@ export async function DELETE(
 ) {
   try {
     const { id } = await params;
-    const session = await getServerSession(authOptions);
-    if (!session?.user?.email) {
+    const user = await getUserFromSession();
+    if (!user) {
       return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
     }
 
     // Check ownership
     const existing = await prisma.property.findFirst({
-      where: { id, ownerId: session.user.id },
+      where: { id, ownerId: user.id },
     });
 
     if (!existing) {
