@@ -52,13 +52,13 @@ model User {
 }
 
 model Property {
-  id          String   @id @default(uuid())
+  id          String   @id @default(auto()) @map("_id") @db.ObjectId
   name        String
   description String?
   address     String?
   icalUrl     String?
   imageUrl    String?
-  ownerId     String
+  ownerId     String   @db.ObjectId
   createdAt   DateTime @default(now())
   updatedAt   DateTime @updatedAt
 
@@ -68,8 +68,6 @@ model Property {
   tasks       Task[]
   invites     PropertyInvite[]
   members     PropertyMember[]
-
-  @@index([ownerId])
 }
 
 model PropertyMember {
