@@ -1,0 +1,185 @@
+// This is your Prisma schema file
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+enum UserRole {
+  HOST_PRIVATE
+  PM_COMPANY
+  CLEANER
+  CLEANING_COMPANY
+}
+
+enum TaskStatus {
+  open
+  in_progress
+  completed
+}
+
+enum Language {
+  en
+  el
+}
+
+enum InviteRole {
+  CLEANER
+  CO_HOST
+}
+
+model User {
+  id        String   @id @default(uuid())
+  email     String   @unique
+  password  String
+  name      String?
+  role      UserRole @default(HOST_PRIVATE)
+  language  Language @default(en)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  // Relations
+  properties         Property[]
+  assignedTasks      Task[]              @relation("AssignedTasks")
+  taskActivities     TaskActivity[]
+  notifications      Notification[]
+  propertyMembers    PropertyMember[]
+  sentInvites        PropertyInvite[]    @relation("InviteSender")
+}
+
+model Property {
+  id          String   @id @default(uuid())
+  name        String
+  description String?
+  address     String?
+  icalUrl     String?
+  imageUrl    String?
+  ownerId     String
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  // Relations
+  owner       User             @relation(fields: [ownerId], references: [id], onDelete: Cascade)
+  bookings    Booking[]
+  tasks       Task[]
+  invites     PropertyInvite[]
+  members     PropertyMember[]
+
+  @@index([ownerId])
+}
+
+model PropertyMember {
+  id         String   @id @default(uuid())
+  propertyId String
+  userId     String
+  role       InviteRole
+  createdAt  DateTime @default(now())
+
+  property Property @relation(fields: [propertyId], references: [id], onDelete: Cascade)
+  user     User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([propertyId, userId])
+  @@index([propertyId])
+  @@index([userId])
+}
+
+model Booking {
+  id          String   @id @default(uuid())
+  propertyId  String
+  externalUid String   @unique
+  startDate   DateTime
+  endDate     DateTime
+  summary     String?
+  source      String?
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  // Relations
+  property Property @relation(fields: [propertyId], references: [id], onDelete: Cascade)
+  tasks    Task[]
+
+  @@index([propertyId])
+  @@index([startDate])
+  @@index([endDate])
+}
+
+model Task {
+  id           String     @id @default(uuid())
+  propertyId   String
+  bookingId    String?
+  title        String
+  dueDate      DateTime
+  status       TaskStatus @default(open)
+  assignedToId String?
+  notes        String?
+  createdAt    DateTime   @default(now())
+  updatedAt    DateTime   @updatedAt
+
+  // Relations
+  property     Property       @relation(fields: [propertyId], references: [id], onDelete: Cascade)
+  booking      Booking?       @relation(fields: [bookingId], references: [id], onDelete: SetNull)
+  assignedTo   User?          @relation("AssignedTasks", fields: [assignedToId], references: [id], onDelete: SetNull)
+  activities   TaskActivity[]
+
+  @@index([propertyId])
+  @@index([bookingId])
+  @@index([assignedToId])
+  @@index([status])
+  @@index([dueDate])
+}
+
+model TaskActivity {
+  id          String   @id @default(uuid())
+  taskId      String
+  userId      String
+  action      String   // created, assigned, updated, completed
+  description String
+  createdAt   DateTime @default(now())
+
+  // Relations
+  task Task @relation(fields: [taskId], references: [id], onDelete: Cascade)
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([taskId])
+  @@index([userId])
+}
+
+model PropertyInvite {
+  id         String      @id @default(uuid())
+  propertyId String
+  email      String
+  role       InviteRole
+  token      String      @unique
+  acceptedAt DateTime?
+  senderId   String
+  createdAt  DateTime    @default(now())
+  expiresAt  DateTime
+
+  // Relations
+  property Property @relation(fields: [propertyId], references: [id], onDelete: Cascade)
+  sender   User     @relation("InviteSender", fields: [senderId], references: [id], onDelete: Cascade)
+
+  @@index([propertyId])
+  @@index([email])
+  @@index([token])
+}
+
+model Notification {
+  id        String   @id @default(uuid())
+  userId    String
+  type      String   // task_assigned, task_due_date_changed
+  message   String
+  read      Boolean  @default(false)
+  metadata  Json?
+  createdAt DateTime @default(now())
+
+  // Relations
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId])
+  @@index([read])
+}
