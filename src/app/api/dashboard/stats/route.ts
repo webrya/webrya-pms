@@ -1,36 +1,35 @@
 import { NextResponse } from 'next/server';
-import { getServerSession } from 'next-auth';
-import { authOptions } from '@/lib/auth';
+import { getUserFromSession } from '@/lib/session';
 import { prisma } from '@/lib/prisma';
 
 export async function GET() {
   try {
-    const session = await getServerSession(authOptions);
-    if (!session?.user?.email) {
+    const user = await getUserFromSession();
+    if (!user) {
       return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
     }
 
     const properties = await prisma.property.count({
-      where: { ownerId: session.user.id },
+      where: { ownerId: user.id },
     });
 
     const bookings = await prisma.booking.count({
       where: {
-        property: { ownerId: session.user.id },
+        property: { ownerId: user.id },
         endDate: { gte: new Date() },
       },
     });
 
     const pendingTasks = await prisma.task.count({
       where: {
-        property: { ownerId: session.user.id },
+        property: { ownerId: user.id },
         status: { in: ['open', 'in_progress'] },
       },
     });
 
     const completedTasks = await prisma.task.count({
       where: {
-        property: { ownerId: session.user.id },
+        property: { ownerId: user.id },
         status: 'completed',
       },
     });
