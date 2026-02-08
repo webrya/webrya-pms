@@ -66,7 +66,7 @@ export default function PropertiesPage() {
   if (isLoading) {
     return (
       <div className="p-8 text-white">
-        <p>{t('loading')}</p>
+        <p>Loading...</p>
       </div>
     );
   }
@@ -76,20 +76,20 @@ export default function PropertiesPage() {
   return (
     <div className="p-8">
       <div className="flex items-center justify-between mb-6">
-        <h1 className="text-3xl font-bold text-white">{t('properties')}</h1>
+        <h1 className="text-3xl font-bold text-white">Properties</h1>
         <button
           onClick={() => setShowAddModal(true)}
           className="flex items-center gap-2 px-4 py-2 bg-brand-500 hover:bg-brand-600 text-white rounded-lg transition-colors"
         >
           <Plus className="w-5 h-5" />
-          {t('addProperty')}
+          Add Property
         </button>
       </div>
 
       {properties.length === 0 ? (
         <div className="glass-panel rounded-xl p-8 text-center">
           <Home className="w-16 h-16 mx-auto text-slate-600 mb-4" />
-          <p className="text-slate-400">{t('noProperties')}</p>
+          <p className="text-slate-400">No properties yet. Add your first property to get started.</p>
         </div>
       ) : (
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
@@ -120,7 +120,7 @@ export default function PropertiesPage() {
                   className="flex-1 flex items-center justify-center gap-2 px-3 py-2 bg-slate-700 hover:bg-slate-600 text-white text-sm rounded-lg transition-colors"
                 >
                   <Edit className="w-4 h-4" />
-                  {t('edit')}
+                  Edit
                 </button>
                 {property.icalUrl && (
                   <button
@@ -192,7 +192,7 @@ function PropertyModal({ property, onClose, onSubmit }: any) {
         <form onSubmit={handleSubmit} className="space-y-4">
           <div>
             <label className="block text-sm font-medium text-slate-300 mb-2">
-              {t('propertyName')}
+              Property Name
             </label>
             <input
               type="text"
@@ -205,7 +205,7 @@ function PropertyModal({ property, onClose, onSubmit }: any) {
 
           <div>
             <label className="block text-sm font-medium text-slate-300 mb-2">
-              {t('description')}
+              Description
             </label>
             <textarea
               value={formData.description}
@@ -217,7 +217,7 @@ function PropertyModal({ property, onClose, onSubmit }: any) {
 
           <div>
             <label className="block text-sm font-medium text-slate-300 mb-2">
-              {t('address')}
+              Address
             </label>
             <input
               type="text"
@@ -229,7 +229,7 @@ function PropertyModal({ property, onClose, onSubmit }: any) {
 
           <div>
             <label className="block text-sm font-medium text-slate-300 mb-2">
-              {t('icalUrl')}
+              iCal URL
             </label>
             <input
               type="url"
@@ -242,7 +242,7 @@ function PropertyModal({ property, onClose, onSubmit }: any) {
 
           <div>
             <label className="block text-sm font-medium text-slate-300 mb-2">
-              {t('uploadImage')} (URL)
+              Upload Image (URL)
             </label>
             <input
               type="url"
@@ -259,13 +259,13 @@ function PropertyModal({ property, onClose, onSubmit }: any) {
               onClick={onClose}
               className="flex-1 px-4 py-3 bg-slate-700 hover:bg-slate-600 text-white rounded-lg transition-colors"
             >
-              {t('cancel')}
+              Cancel
             </button>
             <button
               type="submit"
               className="flex-1 px-4 py-3 bg-brand-500 hover:bg-brand-600 text-white rounded-lg transition-colors"
             >
-              {t('save')}
+              Save
             </button>
           </div>
         </form>

@@ -39,7 +39,7 @@ export default function SettingsPage() {
 
   return (
     <div className=\"p-8\">
-      <h1 className=\"text-3xl font-bold text-white mb-6\">{t('settings')}</h1>
+      <h1 className=\"text-3xl font-bold text-white mb-6\">Settings</h1>
 
       <div className=\"flex gap-6\">
         <div className=\"w-64 glass-panel rounded-xl p-4\">
@@ -80,11 +80,11 @@ function ProfileTab({ session, onSubmit }: any) {
 
   return (
     <div>
-      <h2 className=\"text-2xl font-bold text-white mb-6\">{t('profile')}</h2>
+      <h2 className=\"text-2xl font-bold text-white mb-6\">Profile</h2>
       <form onSubmit={(e) => { e.preventDefault(); onSubmit(formData); }} className=\"space-y-4\">
         <div>
           <label className=\"block text-sm font-medium text-slate-300 mb-2\">
-            {t('fullName')}
+            Full Name
           </label>
           <input
             type=\"text\"
@@ -96,7 +96,7 @@ function ProfileTab({ session, onSubmit }: any) {
 
         <div>
           <label className=\"block text-sm font-medium text-slate-300 mb-2\">
-            {t('email')}
+            Email
           </label>
           <input
             type=\"email\"
@@ -108,11 +108,11 @@ function ProfileTab({ session, onSubmit }: any) {
 
         <div>
           <label className=\"block text-sm font-medium text-slate-300 mb-2\">
-            {t('role')}
+            Role
           </label>
           <input
             type=\"text\"
-            value={t(session?.user?.role)}
+            value={session?.user?.role || 'HOST_PRIVATE'}
             disabled
             className=\"w-full px-4 py-3 bg-slate-900/50 border border-slate-700 rounded-lg text-slate-500 cursor-not-allowed\"
           />
@@ -149,11 +149,11 @@ function SecurityTab({ onSubmit }: any) {
 
   return (
     <div>
-      <h2 className=\"text-2xl font-bold text-white mb-6\">{t('security')}</h2>
+      <h2 className=\"text-2xl font-bold text-white mb-6\">Security</h2>
       <form onSubmit={handleSubmit} className=\"space-y-4\">
         <div>
           <label className=\"block text-sm font-medium text-slate-300 mb-2\">
-            {t('currentPassword')}
+            Current Password
           </label>
           <input
             type=\"password\"
@@ -166,7 +166,7 @@ function SecurityTab({ onSubmit }: any) {
 
         <div>
           <label className=\"block text-sm font-medium text-slate-300 mb-2\">
-            {t('newPassword')}
+            New Password
           </label>
           <input
             type=\"password\"
@@ -180,7 +180,7 @@ function SecurityTab({ onSubmit }: any) {
 
         <div>
           <label className=\"block text-sm font-medium text-slate-300 mb-2\">
-            {t('confirmPassword')}
+            Confirm Password
           </label>
           <input
             type=\"password\"
@@ -196,7 +196,7 @@ function SecurityTab({ onSubmit }: any) {
           type=\"submit\"
           className=\"px-6 py-3 bg-brand-500 hover:bg-brand-600 text-white rounded-lg transition-colors\"
         >
-          {t('changePassword')}
+          Change Password
         </button>
       </form>
     </div>
@@ -208,16 +208,16 @@ function PreferencesTab({ language, setLanguage }: any) {
 
   return (
     <div>
-      <h2 className=\"text-2xl font-bold text-white mb-6\">{t('preferences')}</h2>
+      <h2 className=\"text-2xl font-bold text-white mb-6\">Preferences</h2>
       <div>
         <label className=\"block text-sm font-medium text-slate-300 mb-3\">
-          {t('language')}
+          Language
         </label>
         <div className=\"space-y-2\">
           <button
-            onClick={() => setLanguage('en')}
+            onClick={() => {}}
             className={`w-full flex items-center gap-3 px-4 py-3 rounded-lg transition-all ${
-              language === 'en'
+              false
                 ? 'bg-brand-500/10 border-2 border-brand-500 text-brand-400'
                 : 'bg-slate-900/50 border-2 border-slate-700 text-slate-300 hover:border-slate-600'
             }`}
@@ -230,9 +230,9 @@ function PreferencesTab({ language, setLanguage }: any) {
           </button>
 
           <button
-            onClick={() => setLanguage('el')}
+            onClick={() => {}}
             className={`w-full flex items-center gap-3 px-4 py-3 rounded-lg transition-all ${
-              language === 'el'
+              false
                 ? 'bg-brand-500/10 border-2 border-brand-500 text-brand-400'
                 : 'bg-slate-900/50 border-2 border-slate-700 text-slate-300 hover:border-slate-600'
             }`}
