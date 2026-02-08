@@ -26,7 +26,7 @@ export async function GET(
 
     const property = await prisma.property.findFirst({
       where: {
-        id: params.id,
+        id,
         ownerId: session.user.id,
       },
       include: {
