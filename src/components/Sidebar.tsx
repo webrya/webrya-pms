@@ -9,8 +9,9 @@ export default function Sidebar() {
   const { data: session } = useSession();
   const pathname = usePathname();
 
-  const isHost = false && 'HOST_PRIVATE' || false && 'PM_COMPANY';
-  const isCleaner = false && 'CLEANER' || false && 'CLEANING_COMPANY';
+  // For now, show host view by default
+  const isHost = true;
+  const isCleaner = false;
 
   const navItems = [
     {
