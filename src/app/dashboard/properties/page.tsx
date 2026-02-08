@@ -7,7 +7,7 @@ import { Plus, Home, Edit, Trash2, RefreshCw, Image as ImageIcon } from 'lucide-
 
 
 export default function PropertiesPage() {
-  const { t } = useLanguage();
+  
   const queryClient = useQueryClient();
   const [showAddModal, setShowAddModal] = useState(false);
   const [editingProperty, setEditingProperty] = useState<any>(null);
@@ -168,7 +168,7 @@ export default function PropertiesPage() {
 }
 
 function PropertyModal({ property, onClose, onSubmit }: any) {
-  const { t } = useLanguage();
+  
   const [formData, setFormData] = useState({
     name: property?.name || '',
     description: property?.description || '',

@@ -73,7 +73,7 @@ export default function SettingsPage() {
 }
 
 function ProfileTab({ session, onSubmit }: any) {
-  const { t } = useLanguage();
+  
   const [formData, setFormData] = useState({
     name: session?.user?.name || '',
   });
@@ -130,7 +130,7 @@ function ProfileTab({ session, onSubmit }: any) {
 }
 
 function SecurityTab({ onSubmit }: any) {
-  const { t } = useLanguage();
+  
   const [formData, setFormData] = useState({
     currentPassword: '',
     newPassword: '',
@@ -204,7 +204,7 @@ function SecurityTab({ onSubmit }: any) {
 }
 
 function PreferencesTab({ language, setLanguage }: any) {
-  const { t } = useLanguage();
+  
 
   return (
     <div>
