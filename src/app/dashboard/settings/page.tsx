@@ -9,7 +9,7 @@ import { User, Lock, Globe } from 'lucide-react';
 
 export default function SettingsPage() {
   const { data: session, update } = useSession();
-  const { t, language, setLanguage } = useLanguage();
+  
   const [activeTab, setActiveTab] = useState('profile');
 
   const updateProfileMutation = useMutation({
