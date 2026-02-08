@@ -4,11 +4,9 @@ import { useSession } from 'next-auth/react';
 import { useQuery } from '@tanstack/react-query';
 import axios from 'axios';
 import { Home, Calendar, ClipboardList, CheckCircle2 } from 'lucide-react';
-import { useLanguage } from '@/components/LanguageProvider';
 
 export default function DashboardPage() {
   const { data: session } = useSession();
-  const { t } = useLanguage();
 
   const isHost = session?.user?.role === 'HOST_PRIVATE' || session?.user?.role === 'PM_COMPANY';
   const isCleaner = session?.user?.role === 'CLEANER' || session?.user?.role === 'CLEANING_COMPANY';
@@ -33,12 +31,12 @@ export default function DashboardPage() {
   if (isCleaner) {
     return (
       <div className="p-8">
-        <h1 className="text-3xl font-bold text-white mb-6">{t('myTasks')}</h1>
+        <h1 className="text-3xl font-bold text-white mb-6">My Tasks</h1>
         
         {!tasks || tasks.length === 0 ? (
           <div className="glass-panel rounded-xl p-8 text-center">
             <ClipboardList className="w-16 h-16 mx-auto text-slate-600 mb-4" />
-            <p className="text-slate-400">{t('noTasks')}</p>
+            <p className="text-slate-400">No tasks assigned to you.</p>
           </div>
         ) : (
           <div className="space-y-4">
@@ -49,7 +47,7 @@ export default function DashboardPage() {
                     <h3 className="text-lg font-semibold text-white">{task.title}</h3>
                     <p className="text-sm text-slate-400 mt-1">{task.property?.name}</p>
                     <p className="text-xs text-slate-500 mt-2">
-                      {t('dueDate')}: {new Date(task.dueDate).toLocaleDateString()}
+                      Due: {new Date(task.dueDate).toLocaleDateString()}
                     </p>
                   </div>
                   <span className={`px-3 py-1 text-xs font-medium rounded-full ${
@@ -57,7 +55,7 @@ export default function DashboardPage() {
                     task.status === 'in_progress' ? 'bg-blue-500/20 text-blue-400' :
                     'bg-yellow-500/20 text-yellow-400'
                   }`}>
-                    {t(task.status)}
+                    {task.status}
                   </span>
                 </div>
                 {task.notes && (
@@ -73,7 +71,7 @@ export default function DashboardPage() {
 
   return (
     <div className="p-8">
-      <h1 className="text-3xl font-bold text-white mb-6">{t('dashboard')}</h1>
+      <h1 className="text-3xl font-bold text-white mb-6">Dashboard</h1>
 
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
         <div className="glass-panel rounded-xl p-6">
@@ -83,7 +81,7 @@ export default function DashboardPage() {
             </div>
             <div>
               <p className="text-2xl font-bold text-white">{stats?.properties || 0}</p>
-              <p className="text-sm text-slate-400">{t('totalProperties')}</p>
+              <p className="text-sm text-slate-400">Total Properties</p>
             </div>
           </div>
         </div>
@@ -95,7 +93,7 @@ export default function DashboardPage() {
             </div>
             <div>
               <p className="text-2xl font-bold text-white">{stats?.bookings || 0}</p>
-              <p className="text-sm text-slate-400">{t('activeBookings')}</p>
+              <p className="text-sm text-slate-400">Active Bookings</p>
             </div>
           </div>
         </div>
@@ -107,7 +105,7 @@ export default function DashboardPage() {
             </div>
             <div>
               <p className="text-2xl font-bold text-white">{stats?.pendingTasks || 0}</p>
-              <p className="text-sm text-slate-400">{t('pendingTasks')}</p>
+              <p className="text-sm text-slate-400">Pending Tasks</p>
             </div>
           </div>
         </div>
@@ -119,7 +117,7 @@ export default function DashboardPage() {
             </div>
             <div>
               <p className="text-2xl font-bold text-white">{stats?.completedTasks || 0}</p>
-              <p className="text-sm text-slate-400">{t('completedTasks')}</p>
+              <p className="text-sm text-slate-400">Completed Tasks</p>
             </div>
           </div>
         </div>
@@ -128,7 +126,7 @@ export default function DashboardPage() {
       {!stats || (stats.properties === 0 && stats.bookings === 0) ? (
         <div className="glass-panel rounded-xl p-8 text-center">
           <Home className="w-16 h-16 mx-auto text-slate-600 mb-4" />
-          <p className="text-slate-400">{t('noProperties')}</p>
+          <p className="text-slate-400">No properties yet. Add your first property to get started.</p>
         </div>
       ) : null}
     </div>
