@@ -4,7 +4,7 @@ import { useState } from 'react';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import axios from 'axios';
 import { Plus, Home, Edit, Trash2, RefreshCw, Image as ImageIcon } from 'lucide-react';
-import { useLanguage } from '@/components/LanguageProvider';
+
 
 export default function PropertiesPage() {
   const { t } = useLanguage();

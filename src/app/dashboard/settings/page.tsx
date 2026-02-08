@@ -5,7 +5,7 @@ import { useSession } from 'next-auth/react';
 import { useMutation } from '@tanstack/react-query';
 import axios from 'axios';
 import { User, Lock, Globe } from 'lucide-react';
-import { useLanguage } from '@/components/LanguageProvider';
+
 
 export default function SettingsPage() {
   const { data: session, update } = useSession();
