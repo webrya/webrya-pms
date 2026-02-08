@@ -11,7 +11,7 @@ export async function GET() {
 
     const tasks = await prisma.task.findMany({
       where: {
-        assignedToId: session.user.id,
+        assignedToId: user.id,
       },
       include: {
         property: {
