@@ -133,7 +133,7 @@ export default function PropertiesPage() {
                 )}
                 <button
                   onClick={() => {
-                    if (confirm(t('confirmDelete'))) {
+                    if (confirm('Are you sure you want to delete this?')) {
                       deleteMutation.mutate(property.id);
                     }
                   }}
