@@ -15,7 +15,7 @@
 - ✅ Auto Task Generation (δημιουργεί tasks μετά από κάθε checkout)
 - ✅ Task Assignment & Management
 - ✅ Account Settings
-- ✅ MongoDB Database (Replica Set)
+- ✅ PostgreSQL Database (Supabase)
 
 ## 🚀 Πρώτα Βήματα
 
@@ -49,26 +49,14 @@
 
 ## 🗄️ Database Access
 
-**Database**: MongoDB (Replica Set)  
-**Connection**: `mongodb://localhost:27017/webrya_pms`
+**Database**: PostgreSQL (Supabase)  
+**Connection**: `postgresql://postgres:[YOUR-PASSWORD]@db.ywtpuntsxlgsimaqzuxo.supabase.co:5432/postgres`
 
 ### Πρόσβαση στη Βάση
 
 ```bash
-# MongoDB Shell
-mongosh mongodb://localhost:27017/webrya_pms
-
-# Δες όλους τους χρήστες
-db.User.find().pretty()
-
-# Δες όλα τα properties
-db.Property.find().pretty()
-
-# Δες όλες τις κρατήσεις
-db.Booking.find().pretty()
-
-# Δες όλα τα tasks
-db.Task.find().pretty()
+# PostgreSQL Shell
+psql "postgresql://postgres:[YOUR-PASSWORD]@db.ywtpuntsxlgsimaqzuxo.supabase.co:5432/postgres"
 ```
 
 ### Prisma Studio (GUI)
@@ -82,7 +70,7 @@ npx prisma studio
 
 - **Frontend**: Next.js 15 (App Router) + React 19
 - **Backend**: Next.js API Routes
-- **Database**: **MongoDB Replica Set**
+- **Database**: **PostgreSQL (Supabase)**
 - **ORM**: Prisma
 - **Auth**: NextAuth.js
 - **UI**: Tailwind CSS (Dark Theme)
@@ -161,8 +149,8 @@ sudo supervisorctl restart nextjs
 tail -f /var/log/supervisor/nextjs.out.log
 tail -f /var/log/supervisor/nextjs.err.log
 
-# Restart MongoDB
-sudo supervisorctl restart mongodb
+# Έλεγχος σύνδεσης PostgreSQL
+psql "postgresql://postgres:[YOUR-PASSWORD]@db.ywtpuntsxlgsimaqzuxo.supabase.co:5432/postgres"
 
 # Status όλων των services
 sudo supervisorctl status
@@ -197,7 +185,7 @@ npx prisma studio        # Open GUI
 ```
 /app
 ├── prisma/
-│   └── schema.prisma          # MongoDB Schema
+│   └── schema.prisma          # PostgreSQL Schema
 ├── src/
 │   ├── app/
 │   │   ├── api/               # API Routes
@@ -224,7 +212,7 @@ npx prisma studio        # Open GUI
 ## 🌍 Environment Variables
 
 ```env
-DATABASE_URL="mongodb://localhost:27017/webrya_pms"
+DATABASE_URL="postgresql://postgres:[YOUR-PASSWORD]@db.ywtpuntsxlgsimaqzuxo.supabase.co:5432/postgres"
 NEXTAUTH_SECRET="your-secret-key"
 NEXTAUTH_URL="http://localhost:3000"
 
@@ -251,7 +239,7 @@ EMAIL_FROM="noreply@webrya.com"
 Η εφαρμογή είναι **έτοιμη και λειτουργική**! 
 
 ✅ **Όλα τα core features υλοποιημένα**  
-✅ **MongoDB Replica Set configured**  
+✅ **PostgreSQL (Supabase) configured**  
 ✅ **Authentication working**  
 ✅ **iCal sync working**  
 ✅ **Auto task generation working**  
@@ -259,7 +247,7 @@ EMAIL_FROM="noreply@webrya.com"
 ✅ **2 test accounts created**  
 
 **URL**: http://localhost:3000  
-**Database**: MongoDB at `mongodb://localhost:27017/webrya_pms`
+**Database**: PostgreSQL at `postgresql://postgres:[YOUR-PASSWORD]@db.ywtpuntsxlgsimaqzuxo.supabase.co:5432/postgres`
 
 ---
 

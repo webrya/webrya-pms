@@ -4,7 +4,7 @@
 
 - **Frontend**: Next.js 15 (App Router)
 - **Backend**: Next.js API Routes
-- **Database**: MongoDB (instead of PostgreSQL - MongoDB was already installed)
+- **Database**: PostgreSQL (Supabase)
 - **ORM**: Prisma
 - **Authentication**: NextAuth.js
 - **Styling**: Tailwind CSS
@@ -12,28 +12,13 @@
 
 ## 🗄️ Database Access
 
-**Database Type**: MongoDB  
-**Connection String**: `mongodb://localhost:27017/webrya_pms`  
-**Database Name**: `webrya_pms`
+**Database Type**: PostgreSQL (Supabase)  
+**Connection String**: `postgresql://postgres:[YOUR-PASSWORD]@db.ywtpuntsxlgsimaqzuxo.supabase.co:5432/postgres`  
+**Database Name**: `postgres`
 
-**Access MongoDB Shell**:
+**Access PostgreSQL Shell**:
 ```bash
-mongosh mongodb://localhost:27017/webrya_pms
-```
-
-**View Collections**:
-```bash
-show collections
-```
-
-**View Users**:
-```bash
-db.User.find().pretty()
-```
-
-**View Properties**:
-```bash
-db.Property.find().pretty()
+psql "postgresql://postgres:[YOUR-PASSWORD]@db.ywtpuntsxlgsimaqzuxo.supabase.co:5432/postgres"
 ```
 
 ## 🚀 Getting Started
@@ -129,7 +114,7 @@ All UI elements are translated including:
 ```
 /app
 ├── prisma/
-│   └── schema.prisma          # Database schema (MongoDB)
+│   └── schema.prisma          # Database schema (PostgreSQL)
 ├── src/
 │   ├── app/
 │   │   ├── api/               # API routes
@@ -164,7 +149,7 @@ All UI elements are translated including:
 
 Required variables in `.env`:
 ```env
-DATABASE_URL="mongodb://localhost:27017/webrya_pms"
+DATABASE_URL="postgresql://postgres:[YOUR-PASSWORD]@db.ywtpuntsxlgsimaqzuxo.supabase.co:5432/postgres"
 NEXTAUTH_SECRET="your-secret-key-change-in-production"
 NEXTAUTH_URL="http://localhost:3000"
 
@@ -216,7 +201,7 @@ EMAIL_FROM="noreply@webrya.com"
 
 ## 📝 Important Notes
 
-1. **Database Choice**: MongoDB was used instead of PostgreSQL because it was pre-installed and ready to use
+1. **Database Choice**: PostgreSQL via Supabase
 2. **Image Upload**: Uses URL-based images (not file upload) for simplicity
 3. **Email Notifications**: Functions are ready but require SMTP configuration
 4. **Charts**: react-chartjs-2 is installed but charts need to be integrated
@@ -232,7 +217,7 @@ EMAIL_FROM="noreply@webrya.com"
 6. Add advanced task filtering
 7. Implement real-time notifications
 8. Add data export features
-9. Set up production database (MongoDB Atlas)
+9. Set up production database (Supabase or managed PostgreSQL)
 10. Configure production environment variables
 
 ## 🛠️ Maintenance
@@ -259,9 +244,9 @@ npx prisma generate
 
 For issues or questions:
 1. Check logs: `/var/log/supervisor/nextjs.*.log`
-2. Verify MongoDB is running: `sudo supervisorctl status mongodb`
+2. Verify database connectivity: `psql "postgresql://postgres:[YOUR-PASSWORD]@db.ywtpuntsxlgsimaqzuxo.supabase.co:5432/postgres"`
 3. Check Next.js server: `sudo supervisorctl status nextjs`
 
 ---
 
-**Built with ❤️ using Next.js, Prisma, and MongoDB**
+**Built with ❤️ using Next.js, Prisma, and PostgreSQL**
