@@ -1,1 +1,46 @@
-'use client';\n\nimport { createContext, useContext, useState, useEffect, ReactNode } from 'react';\nimport { translations, type Language } from '@/lib/i18n';\nimport { useSession } from 'next-auth/react';\n\ntype LanguageContextType = {\n  language: Language;\n  setLanguage: (lang: Language) => void;\n  t: (key: keyof typeof translations.en) => string;\n};\n\nconst LanguageContext = createContext<LanguageContextType | undefined>(undefined);\n\nexport function LanguageProvider({ children }: { children: ReactNode }) {\n  const { data: session } = useSession();\n  const [language, setLanguageState] = useState<Language>('en');\n\n  useEffect(() => {\n    if (session?.user?.language) {\n      setLanguageState(session.user.language as Language);\n    }\n  }, [session]);\n\n  const setLanguage = (lang: Language) => {\n    setLanguageState(lang);\n  };\n\n  const t = (key: keyof typeof translations.en): string => {\n    return translations[language][key] || translations.en[key] || key;\n  };\n\n  return (\n    <LanguageContext.Provider value={{ language, setLanguage, t }}>\n      {children}\n    </LanguageContext.Provider>\n  );\n}\n\nexport function useLanguage() {\n  const context = useContext(LanguageContext);\n  if (!context) {\n    throw new Error('useLanguage must be used within LanguageProvider');\n  }\n  return context;\n}\n
+'use client';
+
+import { createContext, useContext, useState, useEffect, ReactNode } from 'react';
+import { translations, type Language } from '@/lib/i18n';
+import { useSession } from 'next-auth/react';
+
+type LanguageContextType = {
+  language: Language;
+  setLanguage: (lang: Language) => void;
+  t: (key: keyof typeof translations.en) => string;
+};
+
+const LanguageContext = createContext<LanguageContextType | undefined>(undefined);
+
+export function LanguageProvider({ children }: { children: ReactNode }) {
+  const { data: session } = useSession();
+  const [language, setLanguageState] = useState<Language>('en');
+
+  useEffect(() => {
+    if (session?.user?.language) {
+      setLanguageState(session.user.language as Language);
+    }
+  }, [session]);
+
+  const setLanguage = (lang: Language) => {
+    setLanguageState(lang);
+  };
+
+  const t = (key: keyof typeof translations.en): string => {
+    return translations[language][key] || translations.en[key] || key;
+  };
+
+  return (
+    <LanguageContext.Provider value={{ language, setLanguage, t }}>
+      {children}
+    </LanguageContext.Provider>
+  );
+}
+
+export function useLanguage() {
+  const context = useContext(LanguageContext);
+  if (!context) {
+    throw new Error('useLanguage must be used within LanguageProvider');
+  }
+  return context;
+}\n
