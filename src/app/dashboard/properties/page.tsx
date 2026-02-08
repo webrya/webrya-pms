@@ -154,7 +154,7 @@ export default function PropertiesPage() {
             setShowAddModal(false);
             setEditingProperty(null);
           }}
-          onSubmit={(data) => {
+          onSubmit={(data: any) => {
             if (editingProperty) {
               updateMutation.mutate({ id: editingProperty.id, ...data });
             } else {
