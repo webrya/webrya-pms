@@ -43,4 +43,4 @@ export function useLanguage() {
     throw new Error('useLanguage must be used within LanguageProvider');
   }
   return context;
-}\n
+}
