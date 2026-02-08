@@ -30,13 +30,17 @@ export async function POST(req: Request, { params }: { params: { id: string } })
     let newBookings = 0;
     let newTasks = 0;
 
-    for (const event of events) {
-      // Check if booking already exists
-      const existing = await prisma.booking.findUnique({
-        where: { externalUid: event.uid },
-      });
+    // Batch fetch existing bookings to avoid N+1 queries
+    const existingUids = events.map(e => e.uid);
+    const existingBookings = await prisma.booking.findMany({
+      where: { externalUid: { in: existingUids } },
+      select: { externalUid: true }
+    });
+    const existingUidsSet = new Set(existingBookings.map(b => b.externalUid));
 
-      if (!existing) {
+    for (const event of events) {
+      // Check if booking already exists using Set lookup (O(1) instead of database query)
+      if (!existingUidsSet.has(event.uid)) {
         // Create booking
         const booking = await prisma.booking.create({
           data: {
@@ -52,7 +56,7 @@ export async function POST(req: Request, { params }: { params: { id: string } })
 
         // Auto-create cleaning task
         const dueDate = addDays(event.endDate, 1);
-        await prisma.task.create({
+        const task = await prisma.task.create({
           data: {
             propertyId: property.id,
             bookingId: booking.id,
@@ -62,13 +66,10 @@ export async function POST(req: Request, { params }: { params: { id: string } })
           },
         });
 
-        // Create activity
+        // Create activity using the task we just created (no additional query needed)
         await prisma.taskActivity.create({
           data: {
-            taskId: (await prisma.task.findFirst({
-              where: { bookingId: booking.id },
-              select: { id: true },
-            }))!.id,
+            taskId: task.id,
             userId: session.user.id,
             action: 'created',
             description: 'Task auto-generated from booking',
