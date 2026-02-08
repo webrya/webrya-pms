@@ -5,8 +5,12 @@ import { prisma } from '@/lib/prisma';
 import { parseICalFeed } from '@/lib/ical';
 import { addDays } from 'date-fns';
 
-export async function POST(req: Request, { params }: { params: { id: string } }) {
+export async function POST(
+  req: Request,
+  { params }: { params: Promise<{ id: string }> }
+) {
   try {
+    const { id } = await params;
     const session = await getServerSession(authOptions);
     if (!session?.user?.id) {
       return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
