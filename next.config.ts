@@ -10,12 +10,6 @@ const nextConfig: NextConfig = {
       },
     ],
   },
-  experimental: {
-    allowedDevOrigins: [
-      'propmaster-122.preview.emergentagent.com',
-      'localhost:3000',
-    ],
-  },
 };
 
 export default nextConfig;
