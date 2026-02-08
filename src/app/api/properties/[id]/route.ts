@@ -105,7 +105,7 @@ export async function DELETE(
 
     // Check ownership
     const existing = await prisma.property.findFirst({
-      where: { id: params.id, ownerId: session.user.id },
+      where: { id, ownerId: session.user.id },
     });
 
     if (!existing) {
@@ -113,7 +113,7 @@ export async function DELETE(
     }
 
     await prisma.property.delete({
-      where: { id: params.id },
+      where: { id },
     });
 
     return NextResponse.json({ success: true });
